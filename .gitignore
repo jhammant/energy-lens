@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+private/
+*private*.json
+*.csv
+*.xlsx
+*.pdf
+.openai/local*
+artifacts/
