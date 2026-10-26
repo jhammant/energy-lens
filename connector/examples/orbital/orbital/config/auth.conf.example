@@ -1,0 +1,10 @@
+// For a token-protected API, copy to auth.conf and provide the token in Orbital's
+// environment. Never paste an actual token into a version-controlled file.
+authenticationTokens {
+  "hammant.energylens.PowerApi" {
+    type = HttpHeader
+    headerName = "Authorization"
+    prefix = "Bearer"
+    value = ${ENERGY_LENS_API_TOKEN}
+  }
+}

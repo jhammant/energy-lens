@@ -1,0 +1,2 @@
+find { hammant.energylens.PowerSnapshot }
+using { hammant.energylens.PowerApi::getPower }

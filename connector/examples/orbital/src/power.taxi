@@ -1,0 +1,34 @@
+import taxi.http.HttpOperation
+
+namespace hammant.energylens
+
+type MeterStreamId inherits String
+type PowerObservedAt inherits Instant
+type ReadingAgeSeconds inherits Int
+type CurrentPowerWatts inherits Decimal
+type LastObservedPowerWatts inherits Decimal
+type CumulativeImportKwh inherits Decimal
+
+enum PowerStatus {
+  live,
+  stale,
+  unavailable,
+  clock_skew
+}
+
+[[ Current power is null when no fresh measurement is available. The last
+   observed value and timestamp remain available without implying freshness. ]]
+model PowerSnapshot {
+  streamId: MeterStreamId
+  status: PowerStatus
+  observedAt: PowerObservedAt?
+  ageSeconds: ReadingAgeSeconds?
+  powerWatts: CurrentPowerWatts?
+  lastObservedPowerWatts: LastObservedPowerWatts?
+  cumulativeImportKwh: CumulativeImportKwh?
+}
+
+service PowerApi {
+  @HttpOperation(method = "GET", url = "http://energy-lens/v1/power")
+  operation getPower(): PowerSnapshot
+}

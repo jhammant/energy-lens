@@ -9,6 +9,7 @@ import { importCSV, exportCSV } from "./import.js";
 import { dateRange } from "./time.js";
 import { serve } from "./server.js";
 import { collectMqtt } from "./mqtt.js";
+import { startPowerApi } from "./power.js";
 
 const HELP = `Energy Lens — smart-meter history and cost comparisons
 
@@ -23,6 +24,7 @@ const HELP = `Energy Lens — smart-meter history and cost comparisons
   energy-lens cost --tariffs FILE --tariff ID --from DATE --to DATE
   energy-lens export --from DATE --to DATE --out FILE
   energy-lens collect --broker mqtt://HOST --topic glow/DEVICE/SENSOR/electricitymeter
+  energy-lens api [--stream mqtt:home]       Serve live power for HTTP / Taxi clients
   energy-lens serve                         Start the MCP stdio server
 
 Dates are Europe/London calendar dates; --from is inclusive, --to exclusive.
@@ -30,6 +32,8 @@ Use --stream when more than one data source is saved. --mode historical requires
 dated rates; default scenario applies supplied prices to the recorded usage.
 Other options: --resource-id ID, --refresh, --data-dir PATH, --json,
 --interval day|month|half_hour, --timezone offset|Europe/London|UTC, --baseline ID.
+API options: --host 127.0.0.1, --port 18767, --stale-after 60 (seconds).
+Non-loopback API access requires ENERGY_LENS_API_TOKEN and a private network/tunnel.
 Credentials: extension secure settings, 'login', or GLOW_USERNAME and
 GLOW_PASSWORD_FILE (private file). Never put a password in command arguments.
 `;
@@ -148,6 +152,9 @@ async function main() {
       out: { type: "string" },
       broker: { type: "string" },
       topic: { type: "string" },
+      host: { type: "string" },
+      port: { type: "string" },
+      "stale-after": { type: "string" },
     },
   });
   const command = positionals[0] ?? "help";
@@ -190,6 +197,37 @@ async function main() {
   );
   if (command === "serve") {
     await serve(service);
+    return;
+  }
+  if (command === "api") {
+    try {
+      const server = await startPowerApi(service.store, {
+        host: values.host,
+        port: values.port === undefined ? undefined : Number(values.port),
+        stream: values.stream,
+        staleAfterSeconds:
+          values["stale-after"] === undefined
+            ? undefined
+            : Number(values["stale-after"]),
+        token: process.env.ENERGY_LENS_API_TOKEN,
+      });
+      const address = server.address();
+      console.log(
+        `Read-only power API listening on ${values.host ?? "127.0.0.1"}:${typeof address === "object" ? address?.port : values.port}/v1/power. Keep the MQTT collector running.`,
+      );
+      let closing = false;
+      const close = () => {
+        if (closing) return;
+        closing = true;
+        server.close(() => service.store.close());
+        server.closeAllConnections();
+      };
+      process.once("SIGINT", close);
+      process.once("SIGTERM", close);
+    } catch (error) {
+      service.store.close();
+      throw error;
+    }
     return;
   }
   if (command === "collect") {

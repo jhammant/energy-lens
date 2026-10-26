@@ -41,6 +41,14 @@ node connector/build/cli.mjs export --out readings.csv
 
 First finish meter verification and consent in Bright/Glow. The cloud route needs no CAD. `login` verifies credentials and saves them in your OS credential store; the website never receives them. Sync requests roughly 13 months by default, subject to available meter history. The [connector README](connector/README.md) covers date ranges, multiple meters, headless credentials, CSV import/export, MCP and MQTT.
 
+## Live power and Orbital
+
+The connector can expose current power from a compatible Glow CAD through a
+private, read-only HTTP API alongside MCP. The [Taxi / Orbital example](connector/examples/orbital/README.md)
+provides semantic types, a query and setup instructions. Readings include their
+age; stale or missing data never becomes zero watts. Bright/Glow history alone is
+not a live feed. The public static dashboard does not connect to this private API.
+
 ## Run and verify
 
 The website has no third-party browser dependencies. Node.js 22.13+ is required for the connector and tests; Python 3 serves the local preview.
@@ -70,6 +78,8 @@ flowchart LR
   Storage --> Dashboard[Tariff comparison]
   Database --> MCP[Optional MCP tools]
   MCP --> Host[Your chosen AI host]
+  Database --> API[Optional private power API]
+  API --> Orbital[Taxi / Orbital]
 ```
 
 `core/` holds shared calculations and the dated tariff snapshot. `dist/` contains the static dashboard and data guide. `dist/about/` is the public introduction, with an isolated synthetic charging demo and a 1200×630 PNG for link previews. Its demo never reads or writes browser storage. `scripts/build-core.mjs` generates `dist/engine.mjs` and `dist/tariffs.mjs`; edit their source files in `core/`. `connector/` contains the separately built CLI, MCP server and MQTT collector.

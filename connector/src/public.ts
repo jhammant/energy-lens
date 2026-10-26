@@ -5,5 +5,6 @@ export * from "./glow.js";
 export * from "./analysis.js";
 export * from "./import.js";
 export * from "./mqtt.js";
+export * from "./power.js";
 export * from "./service.js";
 export * from "./server.js";

@@ -3,7 +3,7 @@
 Download available UK smart-meter history, keep it on your computer, and compare
 electricity tariffs against the same half-hourly readings. Use the CLI directly
 or expose six tools to an LLM through MCP. Local CAD readings can also be
-collected over MQTT.
+collected over MQTT and exposed through a private HTTP API with a Taxi schema.
 
 The software is packaged locally; it has not been published to npm or the MCP
 Registry. The example prices are fictional and must be replaced with your quotes.
@@ -167,6 +167,18 @@ TLS. Keep this process on an always-on machine. Raw live samples are retained fo
 seven days; half-hour estimates remain in the local cache. Interpolation is
 limited to samples at most 60 seconds apart. Gaps, resets and unsupported units
 do not create fictional consumption.
+
+## Live power through Taxi / Orbital
+
+Run `energy-lens api --stream mqtt:home` alongside the MQTT collector to expose
+`GET http://127.0.0.1:18767/v1/power`. The response includes watts, observation
+time, reading age and an explicit live/stale/unavailable/clock-skew status. Current
+watts are null when the measurement is not fresh; genuine zero remains zero.
+
+The [Orbital example project](examples/orbital/README.md) includes semantic types,
+a pinned query, private network authentication setup, and the distinction between
+HTTP snapshots and a future Kafka push integration. A compatible CAD is required
+for live readings; the Bright/Glow history account alone cannot supply them.
 
 ## Storage and distribution
 
