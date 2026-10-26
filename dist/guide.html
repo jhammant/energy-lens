@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Get your half-hourly electricity readings from EDF or Bright/Glow, then import them privately into Energy Lens.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Get your data | Energy Lens</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://energylens.hammantlabs.com/guide.html">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="guide.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to guide</a>
+  <header>
+    <a href="./" class="brand" aria-label="Energy Lens home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>Energy Lens</a>
+    <span class="header-context">Your data, on your device</span>
+    <a class="header-link" href="./">Open dashboard →</a>
+  </header>
+  <main id="main" class="guide">
+    <section class="intro"><div><p class="eyebrow">Getting started</p><h1>Your meter readings.<br>A clearer comparison.</h1><p>Bring half-hourly electricity use into Energy Lens to compare tariffs against when your home actually uses power. You can also start with the annual kWh from your bill and try a clearly labelled simulation.</p></div></section>
+    <div class="notice good"><p><strong>No Energy Lens account needed.</strong> Files are read and saved in your browser. This site never asks for your supplier password and does not upload your readings.</p></div>
+    <nav class="guide-nav" aria-label="Guide sections"><a href="#choose">Choose a route</a><a href="#edf">EDF</a><a href="#glow">Bright / Glow</a><a href="#import">Import a file</a><a href="#format">CSV format</a><a href="#help">Troubleshooting</a></nav>
+
+    <section id="choose"><h2>What you need</h2><p>For measured comparisons, use <strong>electricity consumed in each 30-minute interval, in kWh</strong>, with the interval’s start date and time. A meter photo, cumulative register reading, monthly total or cost-only export cannot show when energy was used.</p>
+      <div class="choice-grid">
+        <article class="panel"><h3>Download from EDF</h3><p>Start here if your Energy Hub already shows half-hourly electricity use. You can download readings in your own supplier account.</p><a href="#edf">Follow the EDF steps →</a></article>
+        <article class="panel"><h3>Use Bright / Glow</h3><p>An alternative for supported smart meters, including EDF customers. Verify your meter, then use the local Energy Lens connector to export available history.</p><a href="#glow">Set up Glow and export →</a></article>
+      </div>
+      <p class="small">Another supplier’s CSV can work too: match the timestamp and kWh columns during import. The included tariff prices are a London benchmark checked on 17 October 2026; edit them to match your region and current quotes.</p>
+    </section>
+
+    <section id="edf" class="panel"><h2>1. Download from EDF</h2>
+      <ol>
+        <li>Sign in to <a href="https://www.edfenergy.com/myaccount" target="_blank" rel="noreferrer">EDF MyAccount</a> and open <strong>Energy Hub / your energy use</strong>.</li>
+        <li>Select <strong>electricity</strong>, switch the chart to <strong>energy (kWh)</strong>, and choose a <strong>day / half-hourly</strong> view. Monthly or yearly downloads may contain daily or monthly totals, which are too coarse for this comparison.</li>
+        <li>Use the chart’s <strong>download data / CSV</strong> control, where available. The current household view may export one day at a time. Repeat for the dates you want.</li>
+        <li>Check the downloaded file. Keep a single header row and one row per half-hour. If it starts with an account summary or notes, remove those rows from a working copy. Combine daily exports into one CSV before importing; each dashboard CSV import replaces its current readings.</li>
+        <li>Keep the full date and time for each row. If a daily export contains only times, add that day’s date. Then follow <a href="#import">the import steps below</a>.</li>
+      </ol>
+      <div class="callout"><p><strong>Check missing readings in EDF’s chart.</strong> Some downloads can show zero where the account page labels data “Missing”. Remove only those confirmed missing rows, or mark them <code>missing</code> in a <code>quality</code> or <code>status</code> column. A genuine zero should remain.</p><p>On the autumn clock-change day, repeated 01:00 and 01:30 readings need their correct <code>+01:00</code> or <code>+00:00</code> offsets. Energy Lens rejects ambiguous local times. Use an offset-aware Glow export if the supplier file does not distinguish them.</p></div>
+      <p>If Energy Hub has no readings or download control, try Glow or ask EDF for your available half-hourly electricity consumption. Account layouts and history vary; a request cannot recover data the meter never recorded.</p>
+    </section>
+
+    <section id="glow" class="panel"><h2>2. Get history through Bright / Glow</h2><p>This route works independently of the EDF website. It needs a supported smart meter and your consent. You do not need to buy a Glow display or CAD to retrieve delayed half-hourly DCC data.</p>
+      <ol>
+        <li>Create an account in <a href="https://glowmarkt.com/bright" target="_blank" rel="noreferrer">Bright by Hildebrand</a> or <a href="https://glowmarkt.com" target="_blank" rel="noreferrer">Glow for homes</a>, and verify your email.</li>
+        <li>Complete <strong>Set up Smart Meter</strong>, including property verification and consent. Glow offers verification routes using your in-home display identifier or other evidence, such as a recent bill. Your electricity <strong>MPAN</strong> is the supply-point number on your bill, not the meter serial number; use the 13-digit core if requested.</li>
+        <li>Wait until your electricity meter is active and readings appear. Glow’s <a href="https://shop.glowmarkt.com/pages/glow-bright-meter-verification-process" target="_blank" rel="noreferrer">verification guide</a> aims to start retrieval within <strong>48 hours after verification</strong>. Historical coverage depends on what is available for your meter; a newly installed meter will not have a year of past readings.</li>
+      </ol>
+      <h3>Export using the local connector</h3><p>On your own computer, install <a href="https://nodejs.org/en/download" target="_blank" rel="noreferrer">Node.js 22.13 or newer</a> and Git, then run these commands in a terminal. They build the connector from the <a href="https://github.com/jhammant/energy-lens" target="_blank" rel="noreferrer">open-source repository</a>:</p>
+      <pre><code>git clone https://github.com/jhammant/energy-lens.git
+cd energy-lens
+npm --prefix connector ci
+npm --prefix connector run build
+node connector/build/cli.mjs login
+node connector/build/cli.mjs meters
+node connector/build/cli.mjs sync
+node connector/build/cli.mjs export --out readings.csv</code></pre>
+      <p><code>login</code> prompts privately for your Glow credentials, verifies them with Glow, and stores them in your operating system’s credential store. The download and CSV stay on your computer. Linux needs a working Secret Service for keychain login; see the <a href="https://github.com/jhammant/energy-lens/blob/main/connector/README.md#download-past-readings" target="_blank" rel="noreferrer">connector instructions</a> for headless setup.</p>
+      <p>The default sync requests roughly 13 months, ending at the start of today. This is a requested range, not guaranteed coverage. Rerun <code>sync</code> later to pick up new readings, then export to a new filename; exports refuse to overwrite an existing file.</p>
+      <details><summary>Choose dates, a meter, or a saved data source</summary><p>For a specific range, add the same dates to sync and export. Replace these example dates with your own; <code>--to</code> is exclusive, so this example covers September:</p><pre><code>node connector/build/cli.mjs sync --from 2026-09-01 --to 2026-10-01
+node connector/build/cli.mjs export --from 2026-09-01 --to 2026-10-01 --out september.csv</code></pre><p>If <code>meters</code> lists several electricity meters, pass the chosen <code>--resource-id</code> to sync. If export finds several saved sources, run <code>node connector/build/cli.mjs status</code> and pass the required <code>--stream</code> to export. Sources are kept separate to avoid counting the same home twice.</p></details>
+      <p>Now import <code>readings.csv</code> into the dashboard. The website itself does not sign in to Glow or refresh the local connector’s data automatically.</p>
+    </section>
+
+    <section id="import" class="panel"><h2>3. Import and check your readings</h2><ol>
+      <li>Open the <a href="./">dashboard</a> and choose <strong>Import your data</strong>. Select your CSV or an Energy Lens JSON backup. <strong>Data &amp; method → Paste data</strong> also accepts either format.</li>
+      <li>For CSV, match <strong>Interval start or date</strong> and <strong>Household consumption in kWh</strong>. Select a separate time column if needed. An interval-end column is optional and must be exactly 30 minutes after the start.</li>
+      <li>Leave EV consumption as <strong>Not provided</strong> unless you have measured EV kWh for the same half-hours. Whole-house readings alone cannot prove when a car was charging.</li>
+      <li>For timestamps containing <code>Z</code> or an explicit offset, keep <strong>Require an explicit timezone</strong>. Otherwise choose <strong>UTC</strong> or <strong>UK local time</strong> to match the export. Never guess between them.</li>
+      <li>Choose <strong>Import readings</strong>. Review the date range, measured kWh and missing half-hours in <strong>Data &amp; method</strong>. Compare totals against your source. A complete ordinary UK day has 48 readings; the spring clock-change day has 46 and autumn has 50.</li>
+      <li>Use <strong>Measured half-hourly usage</strong> to compare the imported pattern. Open <strong>Rates</strong> on each tariff to enter your own quote. The bundled prices are dated examples for London and may no longer be available.</li>
+    </ol><div class="callout"><p><strong>Keep a private backup.</strong> Under Data &amp; method, choose <strong>Download private backup</strong>. It includes readings, settings and any imported household details. Import that JSON on another browser or device, or after moving from the old site address to this one. Browser storage does not transfer between addresses.</p><p>CSV import replaces readings; a JSON backup restores the saved household state. Back up before replacing either. Clearing browser storage, using private browsing, or choosing <strong>Remove data from this browser</strong> can remove the saved copy.</p></div></section>
+
+    <section id="format" class="panel"><h2>The CSV format</h2><p>A minimal file has a header and two columns. These example readings are synthetic:</p><pre><code>interval_start,consumption_kwh
+2026-09-01T00:00:00+01:00,0.40
+2026-09-01T00:30:00+01:00,0.35</code></pre><div class="table-wrap"><table><thead><tr><th>Column</th><th>What it means</th></tr></thead><tbody><tr><td><code>interval_start</code></td><td>Start of a 30-minute interval, preferably with a UTC offset. A separate date and time column can also be mapped.</td></tr><tr><td><code>consumption_kwh</code></td><td>Whole-house electricity used in that interval, in kWh. Non-negative; not a meter register, kW power reading, gas volume or price.</td></tr><tr><td><code>ev_kwh</code> (optional)</td><td>Car charging within the same interval. Must be no greater than household kWh. Omit it if unknown.</td></tr><tr><td><code>interval_end</code> (optional)</td><td>End timestamp, exactly 30 minutes after the start.</td></tr><tr><td><code>quality</code> or <code>status</code> (optional)</td><td>Rows marked missing, unavailable or null are skipped. Zero consumption alone never means missing. Supplier cost columns are not used to calculate the comparison.</td></tr></tbody></table></div><p class="small">CSV, semicolon-separated and tab-separated files are accepted, up to 15 MB and 100,000 readings. Identical timestamp duplicates are deduplicated; conflicting readings are rejected. Download another synthetic example from Data &amp; method in the dashboard.</p></section>
+
+    <section id="help" class="panel"><h2>If something doesn’t look right</h2>
+      <details><summary>Glow says active but has no data</summary><p>Active consent means setup succeeded; it does not mean readings have arrived. Allow the initial retrieval window, then check Bright or Glow itself. If it remains empty after 48 hours following verification, contact Glow support through its account/help pages. Energy Lens cannot pull history that Glow has not made available.</p></details>
+      <details><summary>The import reports missing intervals</summary><p>Recent readings can be delayed. Check the source, download again later, and import the updated complete file. Coverage is measured across whole UK calendar days, so a partial first or last day is also flagged. The dashboard never fills gaps or extrapolates a partial bill.</p></details>
+      <details><summary>The timestamp is ambiguous, invalid, or duplicated</summary><p>Use a full date plus time, with a timezone. For a separate date and time, use YYYY-MM-DD or DD/MM/YYYY and HH:MM. Repeated autumn times need their actual offsets. Remove summary rows and choose half-hourly data rather than daily totals. Do not delete a genuine repeated clock hour to make an error disappear.</p></details>
+      <details><summary>I have bills or meter photographs, but no half-hourly file</summary><p>Use annual simulation with the electricity kWh from your bill. Enter home EV charging separately if known, or set it to zero if you have no EV. These inputs estimate a pattern; they do not create measured history. Photographs and PDF bills are not imported by the website.</p></details>
+      <details><summary>I moved to this address and my data disappeared</summary><p>Your data belongs to the browser and website address where you imported it. Return to the old address, download a private JSON backup from Data &amp; method, and import it here. An app update at the same address normally keeps the saved data; a new browser, device or address starts empty.</p></details>
+      <details><summary>Where does my information go?</summary><p>The dashboard has no account system, analytics or data-upload endpoint. Its files are hosted on GitHub Pages, which receives ordinary web requests when you visit. Imported files and settings are kept in your browser’s local storage. Downloaded backups contain your data: store and share them accordingly. The optional connector talks directly to Glow, stores readings locally, and only shares readings with an AI host if you choose to connect its MCP tools.</p></details>
+    </section>
+    <a class="back-link" href="./">Open Energy Lens and import your readings →</a>
+    <footer><span>Energy Lens</span><a href="https://github.com/jhammant/energy-lens" target="_blank" rel="noreferrer">Source code · MIT licence</a><span>Independent of EDF and Hildebrand</span></footer>
+  </main>
+</body>
+</html>

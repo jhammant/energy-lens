@@ -1,0 +1,22 @@
+[
+  {
+    "id": "example-history",
+    "name": "Example dated rates — replace with your bills",
+    "currency": "GBP",
+    "vatIncluded": true,
+    "periods": [
+      {
+        "from": "2026-01-01",
+        "to": "2026-04-01",
+        "unitPencePerKwh": 27,
+        "standingPencePerDay": 44
+      },
+      {
+        "from": "2026-04-01",
+        "to": "2026-07-01",
+        "unitPencePerKwh": 25,
+        "standingPencePerDay": 46
+      }
+    ]
+  }
+]

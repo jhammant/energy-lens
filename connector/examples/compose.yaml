@@ -1,0 +1,15 @@
+services:
+  collector:
+    build:
+      context: ..
+    command: ["collect"]
+    restart: unless-stopped
+    environment:
+      MQTT_BROKER: ${MQTT_BROKER:?Set your broker URL}
+      MQTT_TOPIC: ${MQTT_TOPIC:?Set your exact electricity topic}
+      MQTT_USERNAME: ${MQTT_USERNAME:-}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
+    volumes:
+      - meter-data:/data
+volumes:
+  meter-data:

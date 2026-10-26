@@ -29,3 +29,16 @@ test('reading export round-trips with or without the optional EV column',()=>{
  const csv=recordsToCSV(original),parsed=parseCSV(csv);assert.equal(parsed.headers.includes('ev_kwh'),withEV);
  const imported=recordsFromCSV(parsed,{start:'interval_start',kwh:'consumption_kwh',...(withEV?{ev:'ev_kwh'}:{})}).records;assert.deepEqual(imported,original);}
 });
+
+test('CSV excludes explicitly missing readings but keeps genuine zero use',()=>{
+ const csv='interval_start,consumption_kwh,quality,status\n2026-09-01T00:00:00+01:00,0,measured,\n2026-09-01T00:30:00+01:00,0,Missing,\n2026-09-01T01:00:00+01:00,,measured,unavailable\n2026-09-01T01:30:00+01:00,0.5,,\n';
+ const result=recordsFromCSV(parseCSV(csv),{start:'interval_start',kwh:'consumption_kwh'});
+ assert.equal(result.skippedMissing,2);
+ assert.deepEqual(result.records.map(r=>r.kwh),[0,.5]);
+ assert.equal(dataStats(result.records).missing,46);
+});
+
+test('a file containing only unavailable data cannot replace existing readings',()=>{
+ const csv='interval_start,consumption_kwh,status\n2026-09-01T00:00:00+01:00,,null\n';
+ assert.throws(()=>recordsFromCSV(parseCSV(csv),{start:'interval_start',kwh:'consumption_kwh'}),/No available readings/);
+});

@@ -7,3 +7,24 @@ private/
 *.pdf
 .openai/local*
 artifacts/
+.env*
+!.env.example
+*.db*
+*.sqlite*
+data/
+reports/
+scratch/
+.agent-context/
+# The static website is source, even when a global ignore excludes dist.
+!/dist/
+/dist/*
+!/dist/index.html
+!/dist/app.mjs
+!/dist/styles.css
+!/dist/engine.mjs
+!/dist/tariffs.mjs
+!/dist/guide.html
+!/dist/guide.css
+!/dist/favicon.svg
+!/dist/.nojekyll
+!/dist/CNAME

@@ -1,0 +1,58 @@
+{
+  "name": "@jhammant/energy-lens-mcp",
+  "mcpName": "io.github.jhammant/energy-lens",
+  "version": "0.1.0",
+  "description": "Download UK smart-meter history and compare electricity costs through MCP or a local CLI.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jon Hammant",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bin": {
+    "energy-lens": "build/cli.mjs",
+    "energy-lens-mcp": "build/server.mjs"
+  },
+  "files": [
+    "build",
+    "examples",
+    "Dockerfile",
+    ".dockerignore",
+    "README.md",
+    "LICENSE",
+    "manifest.json",
+    "server.json"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write src tests scripts examples *.json *.md",
+    "lint": "npm run typecheck && prettier --check src tests scripts examples *.json *.md",
+    "bundle": "npm run build && node scripts/bundle.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "mqtt": "5.16.1",
+    "zod": "4.6.7"
+  },
+  "optionalDependencies": {
+    "@napi-rs/keyring": "2.1.2"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@types/node": "26.6.5",
+    "aedes": "1.2.0",
+    "esbuild": "0.28.2",
+    "fflate": "0.8.3",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhammant/energy-lens.git",
+    "directory": "connector"
+  },
+  "homepage": "https://energylens.hammantlabs.com/guide.html"
+}

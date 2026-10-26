@@ -1,0 +1,6 @@
+*
+!build/
+!build/**
+!LICENSE
+!README.md
+!Dockerfile

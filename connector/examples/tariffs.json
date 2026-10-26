@@ -1,0 +1,25 @@
+[
+  {
+    "id": "example-flat",
+    "name": "Example flat tariff — replace with your quote",
+    "currency": "GBP",
+    "vatIncluded": true,
+    "rates": { "unitPencePerKwh": 28, "standingPencePerDay": 45 }
+  },
+  {
+    "id": "example-overnight",
+    "name": "Example overnight tariff — replace with your quote",
+    "currency": "GBP",
+    "vatIncluded": true,
+    "rates": {
+      "unitPencePerKwh": 34,
+      "standingPencePerDay": 45,
+      "offPeak": {
+        "start": "23:00",
+        "end": "06:00",
+        "unitPencePerKwh": 7,
+        "clock": "Europe/London"
+      }
+    }
+  }
+]

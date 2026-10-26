@@ -1,0 +1,34 @@
+name: Connector verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['22', '24']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: connector/package-lock.json
+      - run: npm ci
+        working-directory: connector
+      - run: npm test
+      - run: npm run lint
+        working-directory: connector
+      - run: npm run bundle
+        working-directory: connector
+      - run: npm pack --pack-destination artifacts
+        working-directory: connector
+      - uses: actions/upload-artifact@v4
+        with:
+          name: energy-lens-${{ matrix.os }}-node${{ matrix.node }}
+          path: connector/artifacts/

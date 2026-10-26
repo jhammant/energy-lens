@@ -1,0 +1,67 @@
+{
+  "manifest_version": "0.3",
+  "name": "energy-lens",
+  "display_name": "Energy Lens",
+  "version": "0.1.0",
+  "description": "Download smart-meter history and compare electricity costs using your actual consumption.",
+  "author": { "name": "Jon Hammant" },
+  "license": "MIT",
+  "server": {
+    "type": "node",
+    "entry_point": "server/server.mjs",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/server.mjs"],
+      "env": {
+        "GLOW_USERNAME": "${user_config.glow_username}",
+        "GLOW_PASSWORD": "${user_config.glow_password}"
+      }
+    }
+  },
+  "user_config": {
+    "glow_username": {
+      "type": "string",
+      "title": "Bright / Glow email",
+      "description": "The account whose meter you have verified in Bright/Glow. Leave both fields blank to use CSV readings already imported with the CLI.",
+      "sensitive": true,
+      "required": false
+    },
+    "glow_password": {
+      "type": "string",
+      "title": "Bright / Glow password",
+      "description": "Stored securely by the desktop app. Never paste this into a conversation.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=22.13.0" }
+  },
+  "tools": [
+    {
+      "name": "meter_status",
+      "description": "Check saved meters, freshness and configured tariffs."
+    },
+    {
+      "name": "list_meters",
+      "description": "Discover your verified Glow electricity meters."
+    },
+    {
+      "name": "sync_history",
+      "description": "Download available half-hourly history to the private local cache."
+    },
+    {
+      "name": "get_usage",
+      "description": "Read usage and missing-data coverage."
+    },
+    {
+      "name": "calculate_cost",
+      "description": "Calculate electricity and standing charges."
+    },
+    {
+      "name": "compare_tariffs",
+      "description": "Compare tariffs against the same recorded usage."
+    }
+  ]
+}

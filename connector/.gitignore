@@ -1,0 +1,7 @@
+/build/
+/artifacts/
+/node_modules/
+*.db*
+*.sqlite*
+.env*
+!.env.example
