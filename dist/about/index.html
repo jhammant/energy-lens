@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A cheap overnight rate is only part of the bill. Energy Lens compares electricity tariffs against your household use, with private imports and open-source code.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Energy Lens">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="A cheaper night. A cheaper bill? | Energy Lens">
+  <meta property="og:description" content="Compare electricity tariffs against your household use and EV charging. Your readings stay in your browser. Free and open source.">
+  <meta property="og:url" content="https://energylens.hammantlabs.com/about/">
+  <meta property="og:image" content="https://energylens.hammantlabs.com/about/share-card.png">
+  <meta property="og:image:secure_url" content="https://energylens.hammantlabs.com/about/share-card.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Energy Lens: A cheaper night. A cheaper bill? Two illustrative charts show car charging moving from the evening to overnight.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A cheaper night. A cheaper bill? | Energy Lens">
+  <meta name="twitter:description" content="Compare the whole household. Keep your readings private. Free, open-source electricity comparisons.">
+  <meta name="twitter:image" content="https://energylens.hammantlabs.com/about/share-card.png">
+  <link rel="canonical" href="https://energylens.hammantlabs.com/about/">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="about.css">
+  <script type="module" src="about.mjs"></script>
+  <title>Energy Lens | A cheaper night. A cheaper bill?</title>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to introduction</a>
+  <header class="site-header wrap">
+    <a class="brand" href="./" aria-label="Energy Lens introduction"><img src="../favicon.svg" alt="" width="36" height="36">Energy Lens</a>
+    <nav aria-label="Main navigation"><a class="desktop-link" href="#how-it-works">How it works</a><a class="desktop-link" href="https://github.com/jhammant/energy-lens" target="_blank" rel="noreferrer">GitHub</a><a class="button compact" href="../">Open the app</a></nav>
+  </header>
+  <main id="main">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <h1>The cheap night rate is only part of the bill.</h1>
+        <p class="lead">Compare electricity tariffs against your whole household: daytime use, standing charges and the car on the drive.</p>
+        <p>Energy Lens uses your half-hourly readings, or a clearly labelled simulation, to show what a different tariff or charging time could change.</p>
+        <div class="actions"><a class="button" href="../">Try Energy Lens</a><a href="../guide.html">Get your meter data</a></div>
+        <p class="small">Free to use. Open source. No Energy Lens account.</p>
+      </div>
+      <section class="demo" aria-labelledby="demo-heading">
+        <div class="demo-heading"><h2 id="demo-heading">Same energy. Different time.</h2><span class="demo-label">Made-up example</span></div>
+        <p class="demo-intro">Move the car’s charging to see how the pattern changes.</p>
+        <div class="scenario" role="group" aria-label="Example charging time">
+          <button id="demo-arrival" type="button" aria-pressed="true">On arrival</button><button id="demo-overnight" type="button" aria-pressed="false">Overnight</button>
+        </div>
+        <div class="legend"><span><i class="home-dot"></i>Home</span><span><i class="ev-dot"></i>Car</span><span class="window-legend">Shading: cheaper hours</span></div>
+        <svg id="demo-chart" viewBox="0 0 620 250" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Illustrative electricity use across a day</title><desc id="chart-desc">The blue household profile stays the same. Teal car charging can move from 18:00 to after midnight.</desc></svg>
+        <div class="demo-result" aria-live="polite"><p><span id="demo-timing">Charging on arrival</span><strong id="demo-cost">£1.97</strong><span>example EV energy per day</span></p><p id="demo-explanation">The same 6.6 kWh of car charging, priced at the time it is used.</p></div>
+        <p class="demo-disclaimer">Illustration only: fictional rates of 30p/kWh by day and 10p from midnight–06:00. This is synthetic data, not anyone’s meter readings or a tariff quote. The full app also counts household use and standing charges.</p>
+        <noscript><p>The interactive example needs JavaScript. The guide and source code are available using the links on this page.</p></noscript>
+      </section>
+    </section>
+
+    <section class="privacy-band"><div class="wrap privacy-inner"><h2>Your readings stay with you.</h2><p>Files are read on your device and saved in your browser. There is no account to create, no readings upload and no analytics. Download a private backup whenever you need one.</p></div></section>
+
+    <section class="questions wrap" aria-labelledby="questions-heading">
+      <h2 id="questions-heading">Look at the whole bill.</h2>
+      <div class="questions-grid">
+        <article><h3>What happens during the day?</h3><p>A low overnight price can come with a higher daytime rate. Compare both against your home’s pattern, with standing charges included.</p></article>
+        <article><h3>What if the car charged later?</h3><p>Try different plug-in hours and charger power. With measured EV readings, only the car’s energy moves; the rest of the household stays in place.</p></article>
+        <article><h3>How much can I trust the result?</h3><p>Check the imported dates and missing half-hours. Gaps remain visible, and incomplete data is never quietly filled with invented consumption.</p></article>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="getting-started wrap">
+      <div><h2>From meter readings<br>to a useful comparison.</h2><p>Start with the annual kWh on your bill if you want to explore. Bring half-hourly data when you’re ready to compare the timing you actually measured.</p><a href="../guide.html">Read the EDF and Glow data guide</a></div>
+      <ol class="steps">
+        <li><h3>Get your electricity use</h3><p>Download half-hourly consumption from your supplier, or use the local Bright / Glow connector after verifying your smart meter.</p></li>
+        <li><h3>Import and check it</h3><p>Match your timestamp and kWh columns. Review the dates, totals and missing intervals. CSVs and saved Energy Lens backups are supported.</p></li>
+        <li><h3>Compare your quotes</h3><p>Enter the rates for your region and tariff. Compare the recorded pattern, or explore charging scenarios using clearly stated assumptions.</p></li>
+      </ol>
+    </section>
+
+    <section class="story wrap">
+      <div class="story-copy"><h2>Built from an ordinary question about an EDF bill.</h2><p>Energy Lens grew out of trying to understand an EDF bill. It brings consumption, charging times and tariff rates into one place so you can examine the assumptions.</p><p>The dashboard, calculation engine and local connector are all open source under the MIT licence. The connector can download available Glow history, work from a local CLI, and expose energy analysis through MCP tools.</p><p class="byline">Built by Jon Hammant. Independent of EDF, Hildebrand and the suppliers shown.</p><a class="button secondary" href="https://github.com/jhammant/energy-lens" target="_blank" rel="noreferrer">Explore the source</a></div>
+      <aside class="scope"><h3>What to know before comparing</h3><p>The app’s initial household numbers are examples. Bundled tariff prices are a London snapshot checked on <strong>17 October 2026</strong>, and offers may have ended. Enter your current regional quotes.</p><p>Measured EV rescheduling needs separate EV readings. Gas, export, batteries and extra smart-dispatch periods are outside the model. A comparison is not a supplier quote or a guaranteed saving.</p><p>Only enable the optional MCP connection if you want to share readings with your chosen AI host.</p></aside>
+    </section>
+
+    <section class="faq wrap" aria-labelledby="faq-heading"><h2 id="faq-heading">A few practical questions</h2>
+      <details><summary>Am I looking at someone else’s private data?</summary><p>No. This introduction uses a fixed synthetic example. A fresh dashboard starts with editable example inputs. Your own imports are stored in your browser and are not published for other visitors.</p></details>
+      <details><summary>Does it only work with EDF?</summary><p>No. Other suppliers’ half-hourly electricity CSVs can work too, using column mapping. The time calculations use UK local time, and the bundled price examples are for London. Enter quotes for your own region before making a comparison.</p></details>
+      <details><summary>Do I need a smart meter or an electric car?</summary><p>A smart meter provides the half-hourly history for measured comparisons. You can explore an annual simulation using bill totals without it. If you do not have an EV, set home charging to zero in the app.</p></details>
+      <details><summary>Will my data follow me to another device?</summary><p>Download a private JSON backup from Data &amp; method, then import it on the other device. Saved data is specific to the browser and website address; it does not sync automatically.</p></details>
+    </section>
+
+    <section class="closing wrap"><div><h2>Bring your own numbers.</h2><p>See what changes when the whole household is included.</p></div><a class="button" href="../">Open Energy Lens</a></section>
+  </main>
+  <footer class="site-footer wrap"><span>Energy Lens by Jon Hammant</span><div><a href="../guide.html">Data guide</a><a href="https://github.com/jhammant/energy-lens" target="_blank" rel="noreferrer">Source code · MIT licence</a><a href="share-card.png" download="energy-lens-linkedin.png">Download share image</a></div></footer>
+</body>
+</html>

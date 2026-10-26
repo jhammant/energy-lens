@@ -28,3 +28,10 @@ scratch/
 !/dist/favicon.svg
 !/dist/.nojekyll
 !/dist/CNAME
+!/dist/about/
+/dist/about/*
+!/dist/about/index.html
+!/dist/about/about.css
+!/dist/about/about.mjs
+!/dist/about/share-card.svg
+!/dist/about/share-card.png

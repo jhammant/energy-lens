@@ -2,7 +2,7 @@
 
 A cheap overnight rate does not always mean a cheaper electricity bill. Energy Lens compares the whole household: daytime use, standing charges and EV charging, using your half-hourly readings or an editable annual simulation.
 
-**[Open Energy Lens](https://energylens.hammantlabs.com)** · **[Get and import your data](https://energylens.hammantlabs.com/guide.html)** · [Local connector / MCP tools](connector/README.md)
+**[Introduction / share page](https://energylens.hammantlabs.com/about/)** · **[Open Energy Lens](https://energylens.hammantlabs.com)** · **[Get and import your data](https://energylens.hammantlabs.com/guide.html)** · [Local connector / MCP tools](connector/README.md)
 
 The dashboard is a static website hosted on GitHub Pages. No account is needed. Imported files and settings stay in your browser; there is no readings-upload endpoint or analytics. The optional connector runs on your computer to download Bright/Glow history, export CSVs, serve MCP tools and collect local CAD readings over MQTT.
 
@@ -72,7 +72,7 @@ flowchart LR
   MCP --> Host[Your chosen AI host]
 ```
 
-`core/` holds shared calculations and the dated tariff snapshot. `dist/` contains the static dashboard and data guide. `scripts/build-core.mjs` generates `dist/engine.mjs` and `dist/tariffs.mjs`; edit their source files in `core/`. `connector/` contains the separately built CLI, MCP server and MQTT collector.
+`core/` holds shared calculations and the dated tariff snapshot. `dist/` contains the static dashboard and data guide. `dist/about/` is the public introduction, with an isolated synthetic charging demo and a 1200×630 PNG for link previews. Its demo never reads or writes browser storage. `scripts/build-core.mjs` generates `dist/engine.mjs` and `dist/tariffs.mjs`; edit their source files in `core/`. `connector/` contains the separately built CLI, MCP server and MQTT collector.
 
 ## Privacy and scope
 
