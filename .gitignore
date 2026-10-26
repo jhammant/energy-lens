@@ -35,3 +35,4 @@ scratch/
 !/dist/about/about.mjs
 !/dist/about/share-card.svg
 !/dist/about/share-card.png
+!/dist/about/share-card-github.png
