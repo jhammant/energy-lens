@@ -11,7 +11,7 @@ The dashboard is a static website hosted on GitHub Pages. No account is needed. 
 1. Open the [dashboard](https://energylens.hammantlabs.com). Try an annual simulation using the electricity kWh from your bill and your home EV charging, if any. The initial numbers are examples.
 2. For a measured comparison, follow the [data guide](https://energylens.hammantlabs.com/guide.html): download half-hourly electricity consumption from EDF or use the Bright/Glow connector.
 3. Choose **Import your data**, match the timestamp and kWh columns, then check the dates and missing intervals under **Data & method**.
-4. Edit **Rates** to match your current regional quotes. Bundled London prices were checked on **17 October 2026**; some offers may have ended. They are comparison benchmarks, not live quotes.
+4. Edit **Rates** to match your current regional quotes. Bundled London prices were checked on **31 October 2026**; some offers may have ended. They are comparison benchmarks, not live quotes.
 5. Download a private JSON backup before changing browsers, devices or site addresses. Each CSV import replaces the current readings.
 
 Use half-hourly **consumption in kWh**, not cumulative meter registers, prices or gas volume. EV kWh is optional and must be a subset of household use. A minimal synthetic example:
@@ -97,6 +97,7 @@ The connector stores readings in `~/.energy-lens/` with private file permissions
 - Measured mode prices imported half-hours in UK local time. Standing charges cover calendar days between the first and last reading, including gaps. A partial result is not a complete bill.
 - Comparisons replay selected prices against usage. They do not assert that those tariffs were available historically. The connector supports separate dated rates for historical bill reconstruction.
 - EV-only discounts apply only to EV energy. Incomplete household quotes are not ranked.
+- Annual comparisons hold the snapshot rates and VAT treatment constant; they are not a forecast of future tax or variable-price changes.
 - Gas, solar export, batteries, incentives, future exit costs, future variable-rate changes and extra smart-dispatch windows are outside the model. Confirm eligibility and a personal quote before switching.
 
 Energy Lens is independent of EDF, Hildebrand and the suppliers shown.
